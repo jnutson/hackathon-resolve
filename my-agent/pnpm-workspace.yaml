@@ -1,0 +1,9 @@
+allowBuilds:
+  '@livekit/local-inference': true
+minimumReleaseAgeExclude:
+  - '@trychert/facetime@0.1.0-beta.10'
+
+# Patched transitive dependencies; retain until upstream pins include these fixes.
+overrides:
+  sharp: 0.35.5
+  zod: 4.6.6

@@ -1,0 +1,33 @@
+{
+  "name": "resolve-return-agent",
+  "main": "worker.mjs",
+  "compatibility_date": "2025-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "CALLS",
+        "class_name": "CallCoordinator",
+      },
+    ],
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["CallCoordinator"],
+    },
+  ],
+  "vars": {
+    "PUBLIC_ORIGIN": "YOUR_PUBLIC_ORIGIN",
+    "CHERT_PROJECT_ID": "YOUR_CHERT_PROJECT_ID",
+    "CHERT_LINE_ID": "YOUR_CHERT_LINE_ID",
+    "AGENT_NAME": "YOUR_AGENT_NAME",
+    "DEMO_ATTEMPT_ID": "v1",
+  },
+}

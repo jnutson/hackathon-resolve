@@ -1,0 +1,946 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>resolve — Return support</title>
+    <style>
+      :root {
+        font-family:
+          Inter,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        color: #20382f;
+        background: #f7f8f5;
+        font-synthesis: none;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      header {
+        height: 88px;
+        padding: 0 6%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #e1e7df;
+        background: white;
+      }
+      .logo {
+        font-size: 25px;
+        font-weight: 750;
+        letter-spacing: -1px;
+      }
+      .logo b {
+        color: #55866a;
+        margin-right: 8px;
+      }
+      .demo {
+        font-size: 12px;
+        color: #64766a;
+        border: 1px solid #d9e2d8;
+        border-radius: 30px;
+        padding: 7px 12px;
+      }
+      main {
+        max-width: 1050px;
+        margin: 48px auto 70px;
+        padding: 0 26px;
+      }
+      .steps {
+        display: flex;
+        gap: 12px;
+        font-size: 12px;
+        color: #7c897e;
+        margin-bottom: 35px;
+        align-items: center;
+      }
+      .steps .current {
+        color: #244d37;
+        font-weight: 650;
+      }
+      .steps i {
+        width: 32px;
+        height: 1px;
+        background: #c9d4c7;
+      }
+      .eyebrow {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1.8px;
+        font-weight: 750;
+        color: #6b806c;
+      }
+      h1 {
+        font-size: 38px;
+        line-height: 1.15;
+        letter-spacing: -1.6px;
+        margin: 12px 0;
+      }
+      .intro {
+        color: #6a796e;
+        margin: 0 0 30px;
+        font-size: 15px;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: 1fr 1.08fr;
+        gap: 24px;
+        align-items: stretch;
+      }
+      .product,
+      .help {
+        border: 1px solid #dde5da;
+        border-radius: 20px;
+        background: white;
+        overflow: hidden;
+      }
+      .photo {
+        height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        padding: 22px;
+      }
+      .photo img {
+        height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+      }
+      .details {
+        padding: 22px 27px;
+        border-top: 1px solid #eef1eb;
+      }
+      .details h2 {
+        font-size: 19px;
+        margin: 6px 0 9px;
+        letter-spacing: -0.4px;
+      }
+      .meta {
+        font-size: 13px;
+        color: #7a877a;
+      }
+      .reason {
+        margin-top: 22px;
+      }
+      select {
+        display: block;
+        width: 100%;
+        margin-top: 9px;
+        padding: 13px 10px;
+        border: 1px solid #dbe2d7;
+        border-radius: 9px;
+        background: #fafbf8;
+        font: inherit;
+        font-size: 14px;
+        color: #354c3b;
+      }
+      .help {
+        padding: 34px;
+        display: flex;
+        flex-direction: column;
+        background: #f0f4eb;
+      }
+      .icon {
+        width: 43px;
+        height: 43px;
+        display: grid;
+        place-items: center;
+        border-radius: 13px;
+        background: #dfead7;
+        font-size: 21px;
+        color: #3f6946;
+        margin-bottom: 23px;
+      }
+      .help h2 {
+        font-size: 28px;
+        line-height: 1.2;
+        letter-spacing: -0.8px;
+        margin: 12px 0 14px;
+      }
+      .help p {
+        font-size: 14px;
+        color: #647462;
+        line-height: 1.65;
+        margin: 0 0 20px;
+      }
+      .benefit {
+        font-size: 13px;
+        color: #46623f;
+        margin: 4px 0 17px;
+      }
+      .benefit span {
+        margin-right: 15px;
+      }
+      .destination {
+        font-size: 13px;
+        margin: 0 0 18px;
+        color: #53664c;
+      }
+      button {
+        width: 100%;
+        padding: 15px;
+        border-radius: 10px;
+        font: inherit;
+        font-weight: 650;
+        font-size: 14px;
+        cursor: pointer;
+      }
+      .primary {
+        background: #28533d;
+        color: white;
+        border: 1px solid #28533d;
+        margin-top: auto;
+      }
+      .primary:hover {
+        background: #1c422d;
+      }
+      .primary:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+      .secondary {
+        background: transparent;
+        color: #3e593d;
+        border: 1px solid #cdd8c5;
+        margin-top: 10px;
+      }
+      .help .consent {
+        font-size: 11px;
+        color: #74806b;
+        line-height: 1.6;
+        margin: 14px 0 0;
+      }
+      .status {
+        font-size: 13px;
+        line-height: 1.6;
+        padding: 13px;
+        border: 1px solid #ccd9c0;
+        background: #fff;
+        border-radius: 10px;
+        margin-top: 16px;
+        overflow-wrap: anywhere;
+      }
+      .status:empty {
+        display: none;
+      }
+      footer {
+        font-size: 12px;
+        color: #7b887b;
+        text-align: center;
+        margin-top: 25px;
+      }
+      button:focus-visible,
+      select:focus-visible {
+        outline: 3px solid #9bbd85;
+        outline-offset: 3px;
+      }
+      @media (max-width: 700px) {
+        header {
+          height: 72px;
+        }
+        main {
+          margin: 30px auto;
+        }
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        h1 {
+          font-size: 32px;
+        }
+        .photo {
+          height: 240px;
+        }
+        .help {
+          padding: 26px;
+        }
+        .steps {
+          gap: 8px;
+          font-size: 11px;
+        }
+        .steps i {
+          width: 16px;
+        }
+      }
+
+      /* Unreturn brand, matched to the supplied deck. */
+      :root {
+        color-scheme: dark;
+        color: #faf9fc;
+        background: #070609;
+        font-family:
+          Manrope,
+          Inter,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+      }
+      body {
+        min-height: 100vh;
+        position: relative;
+        isolation: isolate;
+        overflow-x: hidden;
+      }
+      body:before,
+      body:after {
+        content: "";
+        position: fixed;
+        z-index: -1;
+        pointer-events: none;
+        width: 940px;
+        height: 640px;
+        border-radius: 50%;
+        border: 1px solid #e4d4ff;
+        background: #070609;
+        box-shadow:
+          0 0 22px #d4afff80,
+          0 0 60px #9951e960,
+          0 0 120px #722fba30;
+      }
+      body:before {
+        top: -590px;
+        left: -390px;
+        transform: rotate(-22deg);
+      }
+      body:after {
+        bottom: -650px;
+        right: -380px;
+        transform: rotate(-25deg);
+        width: 1100px;
+        height: 720px;
+      }
+      header {
+        height: 80px;
+        background: transparent;
+        border-bottom: 1px solid #ffffff0d;
+        padding: 0 6%;
+      }
+      .logo {
+        font-size: 20px;
+        letter-spacing: -0.8px;
+      }
+      .demo {
+        color: #c2bacd;
+        border-color: #ffffff20;
+        background: #ffffff03;
+      }
+      main {
+        max-width: 1080px;
+        margin: 32px auto 42px;
+      }
+      .steps {
+        color: #76717f;
+        margin-bottom: 30px;
+      }
+      .steps .current {
+        color: #dfc6ff;
+      }
+      .steps i {
+        background: #3b3249;
+      }
+      .eyebrow {
+        color: #c8a9f5;
+        font-size: 10px;
+        letter-spacing: 1.9px;
+      }
+      h1 {
+        font-size: clamp(32px, 4.2vw, 49px);
+        font-weight: 800;
+        letter-spacing: -2px;
+        line-height: 1.08;
+        margin: 13px 0 16px;
+      }
+      .intro {
+        color: #b5afbf;
+        font-size: 14px;
+        margin-bottom: 30px;
+      }
+      .layout {
+        gap: 22px;
+        grid-template-columns: 1fr 1.12fr;
+      }
+      .product,
+      .help {
+        border-color: #ffffff19;
+        border-radius: 22px;
+        background: #111015;
+      }
+      .photo {
+        height: 260px;
+        background: #fff;
+        margin: 15px 15px 0;
+        border-radius: 12px;
+        padding: 18px;
+      }
+      .details {
+        border-top: 0;
+        padding: 22px 26px 26px;
+      }
+      .details h2 {
+        font-size: 21px;
+        color: #fff;
+        letter-spacing: -0.7px;
+      }
+      .meta {
+        color: #aaa2b5;
+      }
+      .reason {
+        margin-top: 19px;
+      }
+      select {
+        background: #1b1822;
+        border-color: #ffffff21;
+        color: #e5deef;
+        padding: 12px;
+      }
+      .help {
+        background:
+          radial-gradient(ellipse at 100% 110%, #7841b72b, transparent 70%),
+          linear-gradient(135deg, #131116, #100c18);
+        padding: 30px;
+      }
+      .icon {
+        background: #b77bff14;
+        color: #d3adff;
+        border: 1px solid #c69aff35;
+        border-radius: 50%;
+        margin-bottom: 20px;
+      }
+      .help h2 {
+        color: #fff;
+        font-size: 29px;
+        letter-spacing: -1px;
+      }
+      .help p {
+        color: #bbb4c7;
+      }
+      .benefit {
+        color: #d7c6eb;
+      }
+      .destination {
+        color: #aaa0b9;
+      }
+      .destination strong {
+        color: #e6d7f7;
+      }
+      .primary {
+        background: #e2ceff;
+        border-color: #e2ceff;
+        color: #21122f;
+        box-shadow: 0 0 24px #ad6bff20;
+      }
+      .primary:hover {
+        background: #eedfff;
+      }
+      .primary:disabled {
+        background: #e2ceff;
+        opacity: 0.42;
+      }
+      .secondary {
+        border-color: #ffffff26;
+        color: #d8cfe3;
+        background: #ffffff03;
+      }
+      .secondary:hover {
+        background: #ffffff0a;
+      }
+      .help .consent {
+        color: #8c829b;
+      }
+      .status {
+        color: #dfd2ed;
+        background: #b57bff0b;
+        border-color: #ba8bff30;
+      }
+      footer {
+        color: #766e80;
+        margin-top: 22px;
+      }
+      button:focus-visible,
+      select:focus-visible {
+        outline-color: #cd9aff;
+      }
+      @media (max-width: 700px) {
+        main {
+          margin-top: 24px;
+        }
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        h1 {
+          letter-spacing: -1.3px;
+        }
+        .help {
+          padding: 25px;
+        }
+        .photo {
+          height: 240px;
+        }
+        body:before {
+          top: -610px;
+          left: -580px;
+        }
+        body:after {
+          right: -800px;
+        }
+      }
+
+      /* Compact return workflow. */
+      main {
+        max-width: 850px;
+        margin: 32px auto;
+      }
+      .steps {
+        margin-bottom: 28px;
+      }
+      h1 {
+        font-size: 28px;
+        letter-spacing: -1px;
+        margin: 0 0 24px;
+      }
+      .layout {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      .photo {
+        height: 220px;
+      }
+      .details h2 {
+        font-size: 18px;
+      }
+      .help {
+        justify-content: center;
+        padding: 28px;
+      }
+      .help h2 {
+        font-size: 25px;
+        margin: 0 0 10px;
+      }
+      .help p {
+        margin-bottom: 24px;
+      }
+      .primary {
+        margin-top: 0;
+      }
+      .destination {
+        margin-bottom: 22px;
+      }
+      .help .consent {
+        font-size: 11px;
+      }
+      footer {
+        font-size: 11px;
+      }
+      @media (max-width: 700px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        .photo {
+          height: 180px;
+        }
+        .help {
+          padding: 24px;
+        }
+        main {
+          max-width: 480px;
+        }
+        .steps {
+          font-size: 10px;
+          gap: 6px;
+        }
+      }
+
+      /* Resolution confirmation */
+      [hidden] {
+        display: none !important;
+      }
+      .resolved {
+        max-width: 660px;
+        margin: 28px auto 0;
+        text-align: center;
+        padding: 30px 38px 24px;
+        border: 1px solid #d3adff25;
+        border-radius: 28px;
+        background:
+          radial-gradient(ellipse at 50% 0, #a16be51c, transparent 65%), #111015;
+        box-shadow: 0 24px 100px #0004;
+      }
+      .success-mark {
+        width: 78px;
+        height: 78px;
+        margin: 0 auto 20px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: #c5a0ff12;
+        border: 1px solid #d6b4ff50;
+        box-shadow: 0 0 55px #b481ff18;
+        animation: resolve-in 0.55s ease-out both;
+      }
+      .success-mark svg {
+        width: 43px;
+        height: 43px;
+        fill: none;
+        stroke: #e2ceff;
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .success-mark path {
+        stroke-dasharray: 60;
+        stroke-dashoffset: 60;
+        animation: check-in 0.55s 0.15s ease-out forwards;
+      }
+      .resolved h1:focus {
+        outline: none;
+      }
+      .resolved h1 {
+        font-size: clamp(32px, 5vw, 44px);
+        letter-spacing: -1.8px;
+        margin: 12px 0 14px;
+      }
+      .resolved .success-copy {
+        color: #bcb3c8;
+        line-height: 1.65;
+        font-size: 15px;
+        margin: 0 auto 20px;
+        max-width: 370px;
+      }
+      .resolved-product {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        text-align: left;
+        border-top: 1px solid #ffffff10;
+        border-bottom: 1px solid #ffffff10;
+        padding: 16px 0;
+        margin: 0 0 20px;
+      }
+      .resolved-product img {
+        width: 64px;
+        height: 72px;
+        object-fit: contain;
+        background: white;
+        border-radius: 10px;
+        padding: 5px;
+      }
+      .resolved-product strong {
+        font-size: 14px;
+        display: block;
+        margin-bottom: 7px;
+      }
+      .resolved-product span {
+        font-size: 12px;
+        color: #b8abc5;
+      }
+      .resolved-product .resolved-badge {
+        margin-left: auto;
+        color: #d9beef;
+        font-size: 11px;
+        background: #c39bf915;
+        border: 1px solid #c39bf925;
+        border-radius: 30px;
+        padding: 7px 11px;
+        white-space: nowrap;
+      }
+      .resolved .secondary {
+        border: 0;
+        background: transparent;
+        color: #bcb0c9;
+        font-size: 13px;
+        margin-top: 9px;
+      }
+      .resolved .secondary:hover {
+        color: white;
+      }
+      .resolved .choice-note {
+        color: #8f849c;
+        font-size: 12px;
+        line-height: 1.6;
+        margin: 18px 0 0;
+      }
+      .resolved .choice-status {
+        font-size: 13px;
+        line-height: 1.6;
+        color: #e2ceff;
+        margin: 18px 0 0;
+      }
+      .choice-status:empty {
+        display: none;
+      }
+      @keyframes resolve-in {
+        from {
+          opacity: 0;
+          transform: scale(0.88);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      @keyframes check-in {
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .success-mark,
+        .success-mark path {
+          animation: none;
+        }
+        .success-mark path {
+          stroke-dashoffset: 0;
+        }
+      }
+      @media (max-width: 700px) {
+        .resolved {
+          margin-top: 28px;
+          padding: 32px 23px 25px;
+        }
+        .resolved-product {
+          gap: 12px;
+        }
+        .resolved-product .resolved-badge {
+          display: none;
+        }
+        .resolved h1 {
+          letter-spacing: -1.2px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">resolve</div>
+      <span class="demo">Return an item</span>
+    </header>
+    <main>
+      <nav class="steps" aria-label="Return progress">
+        <span>01 &nbsp; Your item</span><i></i
+        ><span class="current" aria-current="step"
+          >02 &nbsp; Return & support</span
+        ><i></i><span id="last-step">03 &nbsp; Confirmation</span>
+      </nav>
+      <h1>Your return</h1>
+      <div class="layout">
+        <section class="product" aria-label="Item to return">
+          <div class="photo">
+            <img
+              src="/assets/garmin-forerunner-165.png"
+              alt="Garmin Forerunner 165 running watch with a light gray strap"
+            />
+          </div>
+          <div class="details">
+            <h2>Garmin Forerunner 165</h2>
+            <div class="reason">
+              <label for="reason" class="eyebrow">Reason for return</label
+              ><select id="reason">
+                <option>The touchscreen isn't responding</option>
+                <option>I'm having trouble setting it up</option>
+                <option>Something else isn't working</option>
+                <option>It's not the right fit for me</option>
+              </select>
+            </div>
+          </div>
+        </section>
+        <section class="help" aria-labelledby="help-title">
+          <h2 id="help-title">Want help before returning it?</h2>
+          <p>Get a quick troubleshooting call.</p>
+          <div class="destination">
+            FaceTime Audio to <strong id="phone">your verified number</strong>
+          </div>
+          <button class="primary" id="call" disabled>Yes, call me</button
+          ><button class="secondary" id="decline">Continue return</button>
+          <p class="consent">
+            One AI support call. You can still return your watch.
+          </p>
+          <div
+            id="status"
+            class="status"
+            role="status"
+            aria-live="polite"
+          ></div>
+        </section>
+      </div>
+      <section
+        id="resolved-screen"
+        class="resolved"
+        aria-labelledby="resolved-title"
+        hidden
+      >
+        <div class="success-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48"><path d="M11 25l9 9L37 15" /></svg>
+        </div>
+        <div class="eyebrow">Troubleshooting complete</div>
+        <h1 id="resolved-title" tabindex="-1">Back to working.</h1>
+        <p class="success-copy">
+          Issue resolved. A little help, and your watch is ready to go again.
+        </p>
+        <div class="resolved-product">
+          <img src="/assets/garmin-forerunner-165.png" alt="" />
+          <div>
+            <strong>Garmin Forerunner 165</strong
+            ><span>Your support session is complete</span>
+          </div>
+          <span class="resolved-badge">✓ Resolved</span>
+        </div>
+        <button class="primary" id="keep-watch">I'll keep my watch</button>
+        <button class="secondary" id="return-anyway">
+          I'd still like to return it
+        </button>
+        <p class="choice-note">
+          The choice is yours. You can still continue your return.
+        </p>
+        <p
+          id="resolved-choice"
+          class="choice-status"
+          role="status"
+          aria-live="polite"
+        ></p>
+      </section>
+      <footer>Demo · No retailer return is submitted.</footer>
+    </main>
+    <script>
+      const call = document.querySelector("#call"),
+        status = document.querySelector("#status"),
+        reason = document.querySelector("#reason");
+      let ready = false,
+        attempted = false,
+        declined = false,
+        pending = false;
+      const requestId = crypto.randomUUID();
+      function message(text) {
+        status.textContent = text;
+      }
+      async function refresh() {
+        if (resolutionShown) return;
+        try {
+          const response = await fetch("/api/status");
+          if (!response.ok) throw new Error();
+          const s = await response.json();
+          if (
+            s.resolution?.status === "resolved" &&
+            s.resolution?.customerConfirmed === true
+          ) {
+            showResolved();
+            return;
+          }
+          document.querySelector("#phone").textContent = s.phone;
+          ready = s.configured;
+          attempted = attempted || s.status !== "idle";
+          call.disabled = !ready || attempted || declined || pending;
+          if (!ready)
+            message(
+              "Call setup is incomplete. Ask the demo operator to configure " +
+                s.missing.join(", ") +
+                ".",
+            );
+          else if (attempted) message(s.message || s.status);
+          else if (!declined && !pending) message("");
+        } catch {
+          call.disabled = true;
+          message(
+            "The call service is unavailable. Please check the local server.",
+          );
+        }
+      }
+      call.onclick = async () => {
+        if (!ready || attempted || declined || pending) return;
+        pending = true;
+        attempted = true;
+        call.disabled = true;
+        reason.disabled = true;
+        document.querySelector("#decline").disabled = true;
+        call.textContent = "Requesting your call…";
+        message("Preparing your troubleshooting call…");
+        try {
+          const r = await fetch("/api/troubleshooting-call", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              consent: true,
+              requestId,
+              product: "Garmin Forerunner 165",
+              returnReason: reason.value,
+            }),
+          });
+          const s = await r.json();
+          message(s.error || s.message || "Your call has been requested.");
+          call.textContent = r.ok ? "Call requested" : "Call unavailable";
+        } catch {
+          call.textContent = "Check call status";
+          message(
+            "The request outcome is unknown. Check Chert before trying again.",
+          );
+        }
+        pending = false;
+        await refresh();
+      };
+      document.querySelector("#decline").onclick = () => {
+        declined = true;
+        call.disabled = true;
+        reason.disabled = true;
+        document.querySelector("#decline").disabled = true;
+        document.querySelector("#help-title").textContent =
+          "Your return choice is saved.";
+        document.querySelector("#last-step").className = "current";
+        message(
+          "You chose to continue your return without a troubleshooting call. This is a demo; no retailer return has been submitted.",
+        );
+      };
+
+      const resolvedScreen = document.querySelector("#resolved-screen");
+      let resolutionShown = false;
+      function showResolved({ preview = false } = {}) {
+        if (resolutionShown) return;
+        resolutionShown = true;
+        document.querySelector("main > h1").hidden = true;
+        document.querySelector(".layout").hidden = true;
+        resolvedScreen.hidden = false;
+        document.querySelectorAll(".steps [aria-current]").forEach((el) => {
+          el.removeAttribute("aria-current");
+          el.classList.remove("current");
+        });
+        const last = document.querySelector("#last-step");
+        last.className = "current";
+        last.setAttribute("aria-current", "step");
+        document.querySelector(".demo").textContent = "Support complete";
+        document.title = "Issue resolved — resolve";
+        if (preview)
+          document.querySelector("footer").textContent =
+            "Resolved screen preview · No return has been changed.";
+        document
+          .querySelector("#resolved-title")
+          .focus({ preventScroll: true });
+      }
+      document.querySelector("#keep-watch").onclick = () => {
+        document.querySelector("#resolved-choice").textContent =
+          "You chose to keep your watch. This demo has not changed a retailer return.";
+        document.querySelector("#keep-watch").textContent =
+          "Keep watch selected";
+        document.querySelector("#return-anyway").textContent =
+          "I'd still like to return it";
+      };
+      document.querySelector("#return-anyway").onclick = () => {
+        document.querySelector("#resolved-choice").textContent =
+          "You chose to continue your return. This demo has not submitted a retailer return.";
+        document.querySelector("#return-anyway").textContent =
+          "Continue return selected";
+        document.querySelector("#keep-watch").textContent =
+          "I'll keep my watch";
+      };
+      // Preview is explicit; call completion alone must never imply a resolved issue.
+      if (location.hash === "#resolved") showResolved({ preview: true });
+
+      refresh();
+      setInterval(refresh, 2500);
+    </script>
+  </body>
+</html>
